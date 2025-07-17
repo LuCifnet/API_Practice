@@ -311,7 +311,7 @@ describe("GoRest API Test Case Users", () => {
             expect(response.body).to.have.property("email", duplicateUser.email);
             cy.log(`User created with email: ${duplicateUser.email}`);
 
-            // Try creating duplicate user
+
             cy.request({
                 method: "POST",
                 url: `/public/v2/users`,
@@ -371,7 +371,7 @@ describe("GoRest API Test Case Users", () => {
         })
     })
 
-    it('TC_015: Update user with empty payload', () => {
+    it('TC_016: Update user with empty payload', () => {
         const statuses = ["active", "inactive"];
         const newUser = {
             name: faker.person.fullName(),
@@ -380,7 +380,6 @@ describe("GoRest API Test Case Users", () => {
             status: statuses[Math.floor(Math.random() * statuses.length)]
         };
 
-        // Step 1: Create user first
         cy.request({
             method: "POST",
             url: `/public/v2/users`,
@@ -393,7 +392,7 @@ describe("GoRest API Test Case Users", () => {
             const userId = response.body.id;
             cy.log(`User created with ID: ${userId}`);
 
-            // Step 2: Try updating with empty payload
+
             cy.request({
                 method: "PUT",
                 url: `/public/v2/users/${userId}`,
@@ -404,7 +403,7 @@ describe("GoRest API Test Case Users", () => {
                 failOnStatusCode: false
             }).then((updateRes) => {
                 expect(updateRes.status).to.eq(200);
-                expect(updateRes.body).to.be.an("array");
+                expect(updateRes.body).to.be.an("object");
                 cy.log("Empty payload validation response:", JSON.stringify(updateRes.body));
             });
         });
@@ -415,7 +414,7 @@ describe("GoRest API Test Case Users", () => {
         const statuses = ["active", "inactive"];
         const userData = {
             name: "Extra",
-            email: "extra_" + Date.now() + "@email.com", // to avoid duplicates
+            email: "extra_" + Date.now() + "@email.com", 
             gender: "female",
             status: statuses[Math.floor(Math.random() * statuses.length)],
             role: "admin" 

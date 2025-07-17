@@ -9,7 +9,7 @@ export default defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     reportDir: 'cypress/reports',
-    overwrite: false,
+    overwrite: true,
     html: true,
     json: true,
     charts: true,
@@ -19,10 +19,8 @@ export default defineConfig({
   e2e: {
     baseUrl: 'https://gorest.co.in',
     setupNodeEvents(on, config) {
-      // Register mochawesome plugin
       mochawesome(on);
 
-      // Optional lifecycle hooks for extended reporting
       on('before:run', async (details) => {
         console.log('Running before:run hook');
         await beforeRunHook(details);
@@ -33,7 +31,7 @@ export default defineConfig({
         await afterRunHook();
       });
 
-      // Inject environment variable from .env
+
       config.env.token = process.env.GOREST_API_TOKEN || '';
       return config;
     },
