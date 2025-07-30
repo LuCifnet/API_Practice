@@ -10,6 +10,9 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
+    env:
+      GOREST_API_TOKEN: ${{ secrets.GOREST_API_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
