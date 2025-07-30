@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 1'  # runs every Monday at 00:00 UTC
+    - cron: '0 0 * * 1'  # every Monday at 00:00 UTC
 
 jobs:
   cypress-run:
@@ -30,9 +30,16 @@ jobs:
       - name: Run Cypress tests
         run: npx cypress run
 
+      - name: Upload Cypress Test Report
+        if: always()  # upload even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-report
+          path: cypress/reports/mochawesome  # report output path
+
       - name: Notify Discord (completed)
         run: |
           curl -H "Content-Type: application/json" \
           -X POST \
-          -d '{"content": "📦 Cypress test job completed on `${{ github.ref_name }}`. Check results: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+          -d '{"content": "📦 Cypress test job completed on `${{ github.ref_name }}`. ✅ Check artifacts: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
