@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Clean old reports
+        run: rm -rf cypress/reports
+
       - name: Run Cypress tests
         run: npx cypress run
 
@@ -35,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-report
-          path: cypress/reports/mochawesome  # report output path
+          path: cypress/reports  # matches reporterOptions.reportDir in cypress config
 
       - name: Notify Discord (completed)
         run: |
